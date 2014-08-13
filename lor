@@ -1,0 +1,38 @@
+[32m.[0m[32m.[0m[31mF[0m[31mF[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[31mF[0m
+
+Failures:
+
+  1) BikeContainer should know when it is full
+     [31mFailure/Error: 20.times {holder.dock!(Bike.new)}[0m
+     [31mRuntimeError:[0m
+     [31m  There is no more room for bikes[0m
+     [36m# ./lib/bike_container.rb:22:in `dock!'[0m
+     [36m# ./spec/bike_container_spec.rb:31:in `block in fill_holder'[0m
+     [36m# ./spec/bike_container_spec.rb:31:in `times'[0m
+     [36m# ./spec/bike_container_spec.rb:31:in `fill_holder'[0m
+     [36m# ./spec/bike_container_spec.rb:22:in `block (2 levels) in <top (required)>'[0m
+
+  2) BikeContainer should not accept bikes if it'full
+     [31mFailure/Error: 20.times {holder.dock!(Bike.new)}[0m
+     [31mRuntimeError:[0m
+     [31m  There is no more room for bikes[0m
+     [36m# ./lib/bike_container.rb:22:in `dock!'[0m
+     [36m# ./spec/bike_container_spec.rb:31:in `block in fill_holder'[0m
+     [36m# ./spec/bike_container_spec.rb:31:in `times'[0m
+     [36m# ./spec/bike_container_spec.rb:31:in `fill_holder'[0m
+     [36m# ./spec/bike_container_spec.rb:26:in `block (2 levels) in <top (required)>'[0m
+
+  3) Docking_Station should allow setting default capacity on initialization
+     [31mFailure/Error: expect(capacity).to eq (20)[0m
+     [31mNameError:[0m
+     [31m  undefined local variable or method `capacity' for #<RSpec::ExampleGroups::DockingStation:0x007f97fabb5550>[0m
+     [36m# ./spec/docking_station_spec.rb:8:in `block (2 levels) in <top (required)>'[0m
+
+Finished in 0.00281 seconds (files took 0.10612 seconds to load)
+[31m9 examples, 3 failures[0m
+
+Failed examples:
+
+[31mrspec ./spec/bike_container_spec.rb:20[0m [36m# BikeContainer should know when it is full[0m
+[31mrspec ./spec/bike_container_spec.rb:25[0m [36m# BikeContainer should not accept bikes if it'full[0m
+[31mrspec ./spec/docking_station_spec.rb:7[0m [36m# Docking_Station should allow setting default capacity on initialization[0m
