@@ -2,7 +2,10 @@ require 'van'
 
 describe Van do
 
-let(:van) {Van.new(:capacity => 10)}
+	it_behaves_like "bike container"
+
+
+	let(:van) {Van.new(:capacity => 10)}
 
 	it "should allow setting default capacity on initialization" do
 		expect(van.capacity).to eq (10)

@@ -1,20 +1,20 @@
 require 'bike_container'
 
-class ContainerHolder; include BikeContainer; end
 
-describe BikeContainer do 
+
+shared_examples "bike container" do
 
 	let(:bike) {Bike.new}
 	let(:broken_bike) { Bike.new.break! }
-	let(:holder) {ContainerHolder.new}
+	let(:holder) {described_class.new}
 
 	it "A BikeContainer can be initialized with bikes" do 
-		mixed_bike_container = ContainerHolder.new ({bikes: [bike, broken_bike]})
+		mixed_bike_container = described_class.new ({bikes: [bike, broken_bike]})
 		expect(mixed_bike_container.bikes).to eq [bike, broken_bike]
 	end
 
 	context "An empty bike container" do
-		let(:empty_bike_container) { ContainerHolder.new }
+		let(:empty_bike_container) { described_class.new }
 		it "should accept a bike" do
 			empty_bike_container.dock!(bike)
 			expect(empty_bike_container.bike_count).to eq (1) 
@@ -29,7 +29,7 @@ describe BikeContainer do
 	end	
 
 	context "A bike container filled with one bike" do
-		let(:container_with_bike) { ContainerHolder.new({bikes: [bike] }) }
+		let(:container_with_bike) { described_class.new({bikes: [bike] }) }
 
 		it 'should be able to release a bike' do
 			container_with_bike.release(bike)
@@ -41,7 +41,7 @@ describe BikeContainer do
 	end
 
 	context "A full bike container" do
-		let(:full_bike_container) { ContainerHolder.new }
+		let(:full_bike_container) { described_class.new }
 		before { fill_holder(full_bike_container,20,0) }
 		
 		it 'should know when it is full' do
@@ -53,7 +53,7 @@ describe BikeContainer do
 	end
 
 	context "A container containing broken and good bikes" do
-		let(:mixed_bike_container) { ContainerHolder.new }
+		let(:mixed_bike_container) { described_class.new }
 		before { fill_holder(mixed_bike_container,6,7)}
 
 		it "should provide a list with all available bikes" do

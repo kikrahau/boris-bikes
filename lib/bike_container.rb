@@ -3,6 +3,7 @@ module BikeContainer
 
 	def initialize (options = {})
 		self.bikes = options.fetch(:bikes, [])
+		self.capacity = options.fetch(:capacity, capacity)
 	end
 
 	def bikes
