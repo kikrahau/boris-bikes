@@ -2,8 +2,10 @@ module BikeContainer
 	DEFAULT_CAPACITY = 20
 
 	def initialize (options = {})
-		self.bikes = options.fetch(:bikes, [])
 		self.capacity = options.fetch(:capacity, capacity)
+		raise RuntimeError if options.fetch(:bikes, []).length > self.capacity
+		self.bikes = options.fetch(:bikes, [])
+		
 	end
 
 	def bikes

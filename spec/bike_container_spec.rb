@@ -6,15 +6,19 @@ shared_examples "bike container" do
 
 	let(:bike) {Bike.new}
 	let(:broken_bike) { Bike.new.break! }
-	let(:holder) {described_class.new}
+	let(:empty_bike_container) {described_class.new}
+	let(:congested_bike_container) { described_class.new(bikes: make_bike_array(empty_bike_container.capacity, empty_bike_container.capacity)) }
+	let(:container_with_bike) { described_class.new({bikes: [bike] }) }
 
-	it "A BikeContainer can be initialized with bikes" do 
-		mixed_bike_container = described_class.new ({bikes: [bike, broken_bike]})
-		expect(mixed_bike_container.bikes).to eq [bike, broken_bike]
+	it "A BikeContainer can be initialized with a bike" do 
+		expect(container_with_bike.bikes).to eq [bike]
+	end
+
+	it "should raise an error if initialized with too many bikes" do
+		expect { congested_bike_container }.to raise_error RuntimeError
 	end
 
 	context "An empty bike container" do
-		let(:empty_bike_container) { described_class.new }
 		it "should accept a bike" do
 			empty_bike_container.dock!(bike)
 			expect(empty_bike_container.bike_count).to eq (1) 
@@ -29,7 +33,7 @@ shared_examples "bike container" do
 	end	
 
 	context "A bike container filled with one bike" do
-		let(:container_with_bike) { described_class.new({bikes: [bike] }) }
+		
 
 		it 'should be able to release a bike' do
 			container_with_bike.release(bike)
@@ -41,7 +45,7 @@ shared_examples "bike container" do
 	end
 
 	context "A full bike container" do
-		let(:full_bike_container) { described_class.new(bikes: make_bike_array(20,0)) }
+		let(:full_bike_container) { described_class.new(bikes: make_bike_array(empty_bike_container.capacity,0)) }
 		
 		it 'should know when it is full' do
 			expect(full_bike_container).to be_full
