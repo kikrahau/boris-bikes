@@ -10,8 +10,7 @@ class Garage
 	# end
 
 	def dock!(bike)
-		raise "There is no more room for bikes" if full?
-		bikes << bike
+		super
 		bike.fix!
 	end
 end
