@@ -23,7 +23,13 @@ class Person
 	end
 
 	def collect_bike_from(station,bike)
-		@bike = bike
+		station.release(bike)
+		receive!(bike)
+	end
+
+	def return_bike_to(station,bike)
+		release!(bike)
+		station.dock!(bike)
 	end
 
 	def bike
