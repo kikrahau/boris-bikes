@@ -41,8 +41,7 @@ shared_examples "bike container" do
 	end
 
 	context "A full bike container" do
-		let(:full_bike_container) { described_class.new }
-		before { fill_holder(full_bike_container,20,0) }
+		let(:full_bike_container) { described_class.new(bikes: make_bike_array(20,0)) }
 		
 		it 'should know when it is full' do
 			expect(full_bike_container).to be_full
@@ -53,8 +52,7 @@ shared_examples "bike container" do
 	end
 
 	context "A container containing broken and good bikes" do
-		let(:mixed_bike_container) { described_class.new }
-		before { fill_holder(mixed_bike_container,6,7)}
+		let(:mixed_bike_container) { described_class.new(bikes: make_bike_array(6,7)) }
 
 		it "should provide a list with all available bikes" do
 			expect(mixed_bike_container.available_bikes.count).to eq 6
@@ -64,8 +62,10 @@ shared_examples "bike container" do
 			expect(mixed_bike_container.broken_bikes.count).to eq 7
 		end
 	end
-	def fill_holder (holder, good_bikes, broken_bikes)
-		good_bikes.times {holder.dock!(Bike.new)}
-		broken_bikes.times {holder.dock!(Bike.new.break!)}
+	def make_bike_array (good_bikes, broken_bikes)
+		bikes = []
+		good_bikes.times { bikes << Bike.new }
+		broken_bikes.times { bikes << Bike.new.break! }
+		bikes
 	end
 end

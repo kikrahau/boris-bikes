@@ -6,18 +6,15 @@ describe Garage do
 
 
 	let(:garage) {Garage.new(:capacity => 123)}
+	let(:broken_bike) { Bike.new.break! }
+
 
 	it "should allow setting default capacity on initialization" do
 		expect(garage.capacity).to eq (123)
 	end
 
-	it "should fix bikes" do
-		bike1 = Bike.new.break!
-		bike2 = Bike.new.break!
-		garage.dock!(bike1)
-		garage.dock!(bike2)
-		garage.fix_broken_bikes!
-		expect(garage.broken_bikes.count).to eq (0)
-		expect(garage.available_bikes.count).to eq (2)
+	it "when docking, Bikes should fixed" do
+		garage.dock!(broken_bike)
+		expect(broken_bike).not_to be_broken 
 	end
 end
