@@ -5,65 +5,67 @@ class ContainerHolder; include BikeContainer; end
 describe BikeContainer do 
 
 	let(:bike) {Bike.new}
+	let(:broken_bike) { Bike.new.break! }
 	let(:holder) {ContainerHolder.new}
 
-	it "should accept a bike" do
-		expect(holder.bike_count).to eq (0)
-		holder.dock!(bike)
-		expect(holder.bike_count).to eq (1)
+	it "A BikeContainer can be initialized with bikes" do 
+		mixed_bike_container = ContainerHolder.new ({bikes: [bike, broken_bike]})
+		expect(mixed_bike_container.bikes).to eq [bike, broken_bike]
 	end
 
-	it 'should be able to release a bike' do
-		holder.dock!(bike)
-		holder.release(bike)
-		expect(holder.bike_count).to eq (0)
+	context "An empty bike container" do
+		let(:empty_bike_container) { ContainerHolder.new }
+		it "should accept a bike" do
+			empty_bike_container.dock!(bike)
+			expect(empty_bike_container.bike_count).to eq (1) 
+		end
+		it "should not be able to release a bike" do 
+			expect{ empty_bike_container.release(bike) }.to raise_error "Bike is not there"
+		end
+
+		it "should know when it is empty" do
+			expect(empty_bike_container).to be_empty 
+		end
+	end	
+
+	context "A bike container filled with one bike" do
+		let(:container_with_bike) { ContainerHolder.new({bikes: [bike] }) }
+
+		it 'should be able to release a bike' do
+			container_with_bike.release(bike)
+			expect(container_with_bike.bike_count).to eq (0)
+		end
+		it "should raise an error if release called without bike argument" do
+			expect { container_with_bike.release() }.to raise_error ArgumentError
+		end
 	end
 
-	it "should only release existing bikes" do 
-		bike1 = Bike.new
-		expect(lambda{holder.release(bike1)} ).to raise_error "Bike is not there"
-	end
-	it "should ask for specification, if not clear which bike is to be released" do
-		expect(lambda{holder.release()}).to raise_error ArgumentError
-	end
-	it 'should know when it is full' do
-		expect(holder).not_to be_full
-		fill_holder holder
-		expect(holder).to be_full
-	end
-	# it 'should know when it is empty' do
-	# 	holder.dock!(bike)
-	# 	expect(holder).not_to be_empty
-	# 	empty_holder holder
-	# 	expect(holder).to be_empty
-	# end
-
-	it "should not accept bikes if it'full" do
-		fill_holder holder
-		expect(lambda {holder.dock!(bike) } ).to raise_error(RuntimeError)
-	end 
-
-	it "should provide a list with all available bikes" do
-		working_bike, broken_bike = Bike.new, Bike.new
-		broken_bike.break!
-		holder.dock!(working_bike)
-		holder.dock!(broken_bike)
-		expect(holder.available_bikes).to eq [working_bike]
-	end
-	it "should provide a list with all broken bikes" do
-		working_bike, broken_bike = Bike.new, Bike.new
-		broken_bike.break!
-		holder.dock!(working_bike)
-		holder.dock!(broken_bike)
-		expect(holder.broken_bikes).to eq [broken_bike]
+	context "A full bike container" do
+		let(:full_bike_container) { ContainerHolder.new }
+		before { fill_holder(full_bike_container,20,0) }
+		
+		it 'should know when it is full' do
+			expect(full_bike_container).to be_full
+		end
+		it "should not accept bikes when its full" do 
+			expect{ full_bike_container.dock!(bike) }.to raise_error(RuntimeError,"There is no more room for bikes") 
+		end
 	end
 
-	# def empty_holder (holder)
-	# 	until empty?
-	# 		holder.pop
-	# 	end
-	# end
-	def fill_holder (holder)
-		20.times {holder.dock!(Bike.new)}
+	context "A container containing broken and good bikes" do
+		let(:mixed_bike_container) { ContainerHolder.new }
+		before { fill_holder(mixed_bike_container,6,7)}
+
+		it "should provide a list with all available bikes" do
+			expect(mixed_bike_container.available_bikes.count).to eq 6
+		end
+
+		it "should provide a list with all broken bikes" do
+			expect(mixed_bike_container.broken_bikes.count).to eq 7
+		end
+	end
+	def fill_holder (holder, good_bikes, broken_bikes)
+		good_bikes.times {holder.dock!(Bike.new)}
+		broken_bikes.times {holder.dock!(Bike.new.break!)}
 	end
 end

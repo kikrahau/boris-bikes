@@ -1,8 +1,16 @@
 module BikeContainer
 	DEFAULT_CAPACITY = 20
 
+	def initialize (options = {})
+		self.bikes = options.fetch(:bikes, [])
+	end
+
 	def bikes
 		@bikes ||= []
+	end
+
+	def bikes=(value)
+		@bikes = value
 	end
 
 	def capacity
