@@ -13,7 +13,7 @@ describe Garage do
 		expect(garage.capacity).to eq (123)
 	end
 
-	it "when docking, Bikes should fixed" do
+	it "when docking, Bikes should be fixed" do
 		garage.dock!(broken_bike)
 		expect(broken_bike).not_to be_broken 
 	end

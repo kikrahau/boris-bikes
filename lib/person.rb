@@ -1,10 +1,9 @@
 require_relative 'bike_container'
 
-class Garage
+class Person
 	include BikeContainer
 
-	def dock!(bike)
-		super
-		bike.fix!
+	def has_bike?
+		@bikes.any?
 	end
 end
