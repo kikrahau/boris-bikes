@@ -8,7 +8,7 @@ describe Van do
 
 	let(:van)         { Van.new(:capacity => 10)}
 	let(:broken_bike) { Bike.new.break! }
-	let(:station)     { Docking_Station.new(bikes: [broken_bike]) }
+	let(:station)     { DockingStation.new(bikes: [broken_bike]) }
 	let(:garage)      { Garage.new }
 
 	it "should allow setting default capacity on initialization" do
